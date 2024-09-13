@@ -98,7 +98,7 @@ void print() {
                 } else if (maze[i][j] == 3) {
                     cout << "███";
                 } else {
-                    cout << "\033[31m" << "███" << "\033[0m";
+                    cout << "\033[30m" << "███" << "\033[0m";
                 }
             }
         }
@@ -147,17 +147,17 @@ int main() {
     init();
     while (1) {
         print();
-        if (read(fd, &event, sizeof(event)) == -1) {
-            perror("read() failed");
-            exit(EXIT_FAILURE);
-        }
 
-        for (int i = 0; i < 50000000; i++) {
+        memset(state, 0, sizeof(state));
+        for (int i = 0; i < 5; i++) {
+            if (read(fd, &event, sizeof(event)) == -1) {
+                perror("read() failed");
+                exit(EXIT_FAILURE);
+            }
             if (event.type == EV_KEY) {
                 if (event.value == 1) {
                     state[event.code] = true;
-                } else if (event.value == 0)
-                    state[event.code] = false;
+                }
             }
             if (state[17] && da != 1)
                 da = 3;
